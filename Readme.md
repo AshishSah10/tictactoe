@@ -4,3 +4,5 @@ Requirements:
 - The game should be playable by at least two players and can be extended to more players in the future.
 - There are standard rules for the game and should be extendable in the future.
 - Allow in-app notification for moves, draws, and wins.
+
+![img_2.png](UMLDigaramImage.png)
