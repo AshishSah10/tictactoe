@@ -67,7 +67,7 @@ public class TicTacToeGame {
     }
 
     public void play(){
-        System.out.println("Current turn is of player: "+this.currentPlayer.name+", whose symbol is: "+this.currentPlayer.symbol);
+        System.out.println("Current turn is of player: "+this.currentPlayer.getName()+", whose symbol is: "+this.currentPlayer.getSymbol());
         System.out.println("Input integer row and col: ");
 
         Scanner sc = new Scanner(System.in);
@@ -153,11 +153,12 @@ public class TicTacToeGame {
 
     private void playNextMove(int row, int col){
         Player currentPlayer = getCurrentPlayer();
-        Cell cell = this.board.getCell(row, col);
-        if(currentPlayer == null || cell == null){
+        if(currentPlayer == null){
+            this.notify("Players are not configured properly, please set players again");
             return;
         }
 
+        Cell cell = this.board.getCell(row, col);
         Move move = new Move(cell, currentPlayer);
 
         if(!this.rule.isValidMove(this.board, move)){
@@ -166,12 +167,12 @@ public class TicTacToeGame {
             return;
         }
 
-        if(!board.markCell(cell, currentPlayer.symbol)){
+        if(!board.markCell(cell, currentPlayer.getSymbol())){
             return;
         }
 
         this.pushNextMove(move);
-        this.notify("Player "+currentPlayer+" mark "+currentPlayer.symbol+" at cell["+row+"]["+col+"]");
+        this.notify("Player "+currentPlayer.getName()+" mark "+currentPlayer.getSymbol()+" at cell["+row+"]["+col+"]");
         this.board.incrementFilledCellCount();
         updateGameStatus();
     }
@@ -181,7 +182,7 @@ public class TicTacToeGame {
            // we have a winner
             this.status = GameState.WIN;
             // System.out.println("Winner of the Game is: "+this.currentPlayer.name+" and Symbol is "+this.currentPlayer.symbol);
-            this.notify("Winner of the Game is: "+this.currentPlayer.name+" and Symbol is "+this.currentPlayer.symbol);
+            this.notify("Winner of the Game is: "+this.currentPlayer.getName()+" and Symbol is "+this.currentPlayer.getSymbol());
             return;
         }
 

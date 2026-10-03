@@ -3,16 +3,13 @@ public class StandardRule implements Rule{
     public boolean isValidMove(Board board, Move move) {
         // we only need cell info for our standard rule.
         Cell cell = move.cell;
-        if(!board.isValidCell(cell) || !cell.isCellEmpty() ) {
-            return false;
-        }
-        return true;
+        return board.isValidCell(cell) && cell.isCellEmpty();
     }
 
     @Override
     public boolean checkWinner(Board board, Player player) {
-        int size = board.size;
-        Cell[][] cells = board.cells;
+        int size = board.getSize();
+        Cell[][] cells = board.getCells();
 
         // check row-wise
         for(int i = 0; i < size; i++){
@@ -24,7 +21,7 @@ public class StandardRule implements Rule{
                 }
             }
             if(foundWinner){
-                return cells[i][0].getSymbol() == player.symbol;
+                return cells[i][0].getSymbol() == player.getSymbol();
             }
         }
 
@@ -38,40 +35,32 @@ public class StandardRule implements Rule{
                 }
             }
             if(foundWinner){
-                return cells[0][j].getSymbol() == player.symbol;
+                return cells[0][j].getSymbol() == player.getSymbol();
             }
         }
 
         // check primary-diagonal
         boolean foundWinner = true;
-        for(int i = 1; i < size; i++){
-            for(int j = 1; j < size; j++) {
-                if(i == j && cells[i-1][j-1].getSymbol() != cells[i][j].getSymbol()){
-                    foundWinner = false;
-                    break;
-                }
+        for(int i = 0; i < size; i++){
+            if(cells[i][i].getSymbol() != player.getSymbol()){
+                foundWinner = false;
+                break;
             }
         }
         if(foundWinner){
-            return cells[1][1].getSymbol() == player.symbol;
+            return true;
         }
 
         // check anti-diagonal
         foundWinner = true;
-        SYMBOL prevSymbol = SYMBOL.EMPTY;
         for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++) {
-                if(i + j == size - 1 ){
-                    if(prevSymbol != SYMBOL.EMPTY && prevSymbol != cells[i][j].getSymbol()) {
-                        foundWinner = false;
-                        break;
-                    }
-                    prevSymbol = cells[i][j].getSymbol();
-                }
+            if(cells[i][size - 1 - i].getSymbol() != player.getSymbol()) {
+                foundWinner = false;
+                break;
             }
         }
         if(foundWinner){
-            return cells[1][1].getSymbol() == player.symbol;
+            return true;
         }
 
         return false;
@@ -79,6 +68,6 @@ public class StandardRule implements Rule{
 
     @Override
     public boolean checkDraw(Board board) {
-        return board.getNoOfFilledCells() == board.size * board.size;
+        return board.getNoOfFilledCells() == board.getSize() * board.getSize();
     }
 }

@@ -1,7 +1,16 @@
 public class Board {
-    int size; // size of the board, For STANDARD Rule its size is 3 i.e. a 3x3 matrix
+    private final int size; // size of the board, For STANDARD Rule its size is 3 i.e. a 3x3 matrix
 
-    Cell[][] cells; // 2D array of cells representing the board
+    public int getSize() {
+        return size;
+    }
+
+    public Cell[][] getCells() {
+        return cells;
+    }
+
+    private final Cell[][] cells; // 2D array of cells representing the board
+
 
     private int noOfFilledCells;
     public Board(int size){
@@ -35,6 +44,10 @@ public class Board {
     }
 
     public boolean isValidCell(Cell cell){
+        if(cell == null){
+            return false;
+        }
+
         int row = cell.getRow();
         int col = cell.getCol();
         if(row >= 0 && row < this.size && col >= 0 && col < size){
